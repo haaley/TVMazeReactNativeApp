@@ -1,11 +1,11 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import MainTab from './mainTab';
+import HomeStack from './homeStack';
 
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <MainTab />
+      <HomeStack />
     </NavigationContainer>
   );
 };
