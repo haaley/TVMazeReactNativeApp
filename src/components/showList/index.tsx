@@ -23,7 +23,7 @@ export const ShowList = ({fetchMoreData, renderFooter, shows}: Props) => {
       ItemSeparatorComponent={() => <Divider style={{marginVertical: 10}} />}
       contentContainerStyle={{margin: 8, padding: 8}}
       style={{marginVertical: 8, flex: 1}}
-      keyExtractor={item => item?.id?.toString()}
+      keyExtractor={(item, index) => index.toString()}
       onEndReached={fetchMoreData}
       ListFooterComponent={renderFooter}
     />

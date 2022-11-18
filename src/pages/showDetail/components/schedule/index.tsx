@@ -16,7 +16,7 @@ export const Schedule = ({schedule}: Props) => {
         <Text style={styles.subtitle}>Days</Text>
         <View style={styles.schedule}>
           {schedule && schedule?.days.length > 0 ? (
-            schedule?.days.map(day => <Chip style={{margin: 4}}>{day}</Chip>)
+            schedule?.days.map(day => <Chip key={day} style={{margin: 4}}>{day}</Chip>)
           ) : (
             <Chip>Unavailable</Chip>
           )}

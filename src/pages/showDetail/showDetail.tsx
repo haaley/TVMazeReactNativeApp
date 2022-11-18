@@ -1,20 +1,20 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import {Image, ScrollView, View} from 'react-native';
 import {
   ActivityIndicator,
   Button,
   Card,
   List,
   Title,
-  TouchableRipple
+  TouchableRipple,
 } from 'react-native-paper';
-import { Summary } from '../../components/summary';
-import { useShowDetails } from '../../hooks/useShowDetails';
-import { HomeStackParamList } from '../../navigation/homeStack';
-import { groupEpisodesBySeason } from '../../utils';
-import { Genres } from './components/genre';
-import { Schedule } from './components/schedule';
+import {Summary} from '../../components/summary';
+import {useShowDetails} from '../../hooks/useShowDetails';
+import {HomeStackParamList} from '../../navigation/homeStack';
+import {groupEpisodesBySeason} from '../../utils';
+import {Genres} from './components/genre';
+import {Schedule} from './components/schedule';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Details'>;
 
@@ -36,14 +36,14 @@ export const ShowDetail: React.FC<Props> = ({navigation, route}) => {
       <Card style={{flex: 1, height: '100%'}}>
         <Image
           style={{height: 280}}
-          source={{uri: showDetails?.image.medium}}
+          source={{uri: showDetails?.image?.medium || showDetails?.image?.original|| 'https://via.placeholder.com/380?text=No+image+available'}}
         />
         <Card.Content style={{display: 'flex', flex: 1}}>
           <Title>{showDetails?.name}</Title>
           <ScrollView horizontal>
             <Genres genres={showDetails?.genres} />
           </ScrollView>
-         <Schedule schedule={showDetails?.schedule} />
+          <Schedule schedule={showDetails?.schedule} />
           <Summary summary={showDetails?.summary} />
           <List.Section
             title="Episodes"
@@ -51,11 +51,16 @@ export const ShowDetail: React.FC<Props> = ({navigation, route}) => {
             {groupedEpisodes.map(item => {
               return (
                 <List.Accordion
+                  key={item.season}
                   title={`Season ${item.season}`}
                   left={props => <List.Icon {...props} icon="folder" />}>
-                  {item.data.map((episode: any) => {
+                  {item.data.map((episode: Episode) => {
                     return (
-                      <TouchableRipple onPress={() => navigation.navigate('Episode', {episode})}>
+                      <TouchableRipple
+                        key={episode.id}
+                        onPress={() =>
+                          navigation.navigate('Episode', {episode})
+                        }>
                         <List.Item
                           title={`${episode.number} - ${episode.name}`}
                           left={props => (
