@@ -1,27 +1,32 @@
 import { debounce } from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
+import { Loading } from '../../components/loading';
 import { ShowList } from '../../components/showList';
 import { useSearch } from '../../hooks/useSearch';
 
 export const Search = () => {
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [displayQuery, setDisplayQuery] = useState('');
+  const {loading, error, showResult, handleSearch} = useSearch();
 
-  const onChangeSearch = (query: string) => setSearchQuery(query);
+  const debouncSearch = useCallback(debounce(handleSearch, 500), []);
 
-  const changeTextDebouncer = useCallback(debounce(onChangeSearch, 500), []);
+  const handleChange = (query: string) => {
+    setDisplayQuery(query);
+    debouncSearch(query)
+  };
 
-  const {loading, error, showResult} = useSearch(searchQuery); 
+
 
   return (
     <View style={{display: 'flex', flex: 1}}>
       <Searchbar
         placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
+        onChangeText={handleChange}
+        value={displayQuery}
       />
-      <ShowList shows={showResult}/>
+      {loading ? <Loading /> : <ShowList shows={showResult} />}
     </View>
   );
 };
